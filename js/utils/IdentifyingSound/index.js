@@ -17,9 +17,11 @@ var IdentifyingSound = {
     });    
   },
   startRecord: function(stream){
+    alert("进入到startRecord")；
     var that = this;
     that.mediaRecorder = new MediaRecorder(stream);
     that.mediaRecorder.addEventListener('dataavailable', function(e){
+		 alert("dataavailable")；
       that.soundData = e.data;
     })
     that.mediaRecorder.start();
@@ -35,6 +37,7 @@ var IdentifyingSound = {
     mediaRecorder.stream.getTracks().forEach(i => i.stop())
   },
   getResultByUploadSound: function(data, successCallback, failedCallback){
+    alert("getResultByUploadSound");
     var that = this;
     API.create_WebSocket();
     API.bindEvent_WebSocketEvent({
@@ -78,6 +81,7 @@ var API = {
     });
   },
   send_WebSocket: function (soundPostData) {
+    alert("send_WebSocket");
     this.socket.send(soundPostData);
   },
   close_WebSocket: function () {

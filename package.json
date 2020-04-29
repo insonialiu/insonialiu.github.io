@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "start": "live-server"
+  },
+  "dependencies": {
+    "live-server": "^1.2.1"
+  },
+  "name": "H5RUBBISH",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:ZHKO1/H5RUBBISH.git",
+  "author": "ZHKO1 <zhko11993@gmail.com>",
+  "license": "MIT"
+}

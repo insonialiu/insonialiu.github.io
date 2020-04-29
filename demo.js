@@ -1,3 +1,4 @@
+alert("111")
 define(['js/utils/common.js',
         'js/utils/IdentifyingPhotos/index.js',
         'js/utils/IdentifyingSound/index.js',
