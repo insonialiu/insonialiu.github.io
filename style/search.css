@@ -1,0 +1,74 @@
+.search_container{
+	color:#666666;
+	width:100%
+}
+.search_input_container{
+	width:100%;
+	background-color:#1ba9df;
+	padding-top:0.22em;
+	padding-bottom:0.19em;
+}
+.search_input_container>div{
+	width:6.46em;
+	margin:0 auto;
+	border-radius:0.28em;
+	background-color:#ffffff;
+	height:0.64em;
+	line-height:0.62em;
+}
+.search_input_container>div>div{
+	width:calc(100% - 0.87em); 
+	height:100%;
+	margin-left:0.3em
+}
+.search_input{
+	font-size: 0.3em;
+    background-color: transparent;
+    border: 0px;
+    display: block;
+	width:100%;
+	height:100%;
+}
+.search_bottom_audio_container{
+	height:1em;
+	border:1px red solid;
+	width:100%;
+	bottom:0;
+	position:absolute;
+	/*display:none*//*模拟*/
+}
+.search_menu_body{
+   max-height:6.99em;
+   width:100%;
+   overflow-y:auto
+}
+.search_menu_row{
+	border-bottom:1px #efefef solid;
+	background-image:url(../img/seach_icon_two.png);
+	background-repeat: no-repeat;
+	background-position:0.25em center;
+	background-size:0.34em auto;
+	border-bottom:1px #efefef solid;
+	height:0.86em;
+	line-height:0.86em;
+	position:relative
+}
+.search_menu_row>img{
+	width:0.26em;
+	height:0.48em;
+	position:absolute;
+	right:0.3em;
+	top:0.19em
+}
+.search_menu_row>div{
+	left:0.8em;
+	position:absolute;
+	height:0.86em;
+	line-height:0.86em;
+	width:5.77em
+}
+.search_menu_row>div>div{
+	height:100%;
+	width:100%;
+	font-size: 0.26em;
+}
