@@ -9,7 +9,7 @@ define(['js/utils/common.js',
       var jq=jQuery;
       jq("#"+containerId+"").append(`
         <div style="border:1px red sold;width:100%;height:300px">
-          页面1
+          页面2
           <button id='test'>上传图片</button>
           <img id='testImg' src=''/>
           <div id='log'></div>
