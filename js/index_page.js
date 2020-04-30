@@ -1,4 +1,4 @@
-define(['js/utils/common.js'], function(CommonApi){	
+define(['js/utils/common.js','js/utils/IdentifyingPhotos/index.js'], function(CommonApi,IdentifyingPhotos){	
 	var indexPage = function(){};
 	indexPage.prototype = {
 		initPara: function(){
@@ -18,8 +18,9 @@ define(['js/utils/common.js'], function(CommonApi){
 				var noteHtml="";
 				var noteList=searchKeywordSample;
 				for(var i = 0; i < noteList.length; i++) {  
-					var marginLeft=(i==0?"":"style=\"margin-left:0.23em\"")
-					noteHtml+=("<div "+marginLeft+" class=\"page_tab\"><div>"+noteList[i]+"</div></div>")
+					//var padding=(i==0?"":"style=\"padding-left:0.23em\"")
+					var padding=("style=\"padding-right:0.23em\"")
+					noteHtml+=("<div class=\"page_tab_container\" "+padding+"><div class=\"page_tab\"><div>"+noteList[i]+"</div></div></div>")
 				};
 				html+=noteHtml
 				html+="</div>";
@@ -27,7 +28,7 @@ define(['js/utils/common.js'], function(CommonApi){
 			html+="</div>";
 			html+="<div class=\"page_input_container\" style=\"border:0;height:auto;margin-top:0.34em\">"	
 			html+="<div class=\"page_big_button\"><div><div style=\"font-size:0.36em\">语音搜索</div></div></div>";
-			html+="<div class=\"page_big_button\" style=\"float:right;background-image:url(img/video.png)\"><div><div style=\"font-size:0.36em\">拍照时别</div></div></div>";
+			html+="<div id=\""+containerId+"_identify_photo\" class=\"page_big_button\" style=\"float:right;background-image:url(img/video.png)\"><div><div style=\"font-size:0.36em\">拍照时别</div></div></div>";
 			html+="</div>";
 			html+="</div></div>";
 			html+="</div>";
@@ -68,7 +69,16 @@ define(['js/utils/common.js'], function(CommonApi){
 		    jq("#index_page_content_body").append(html);
 			document.getElementById("index_page_search_input_container").onclick=function(){
 				 self.leaveCurrentPage('js/search.js');
-			}
+			};
+		  // 图片识别例子
+          var obj = Object.create(IdentifyingPhotos);
+		  obj.init({
+			container: '#waste_sorting_body_identify_photo'
+		  }, function(data){
+		    alert("成功");
+		  }, function(jqXHR, textStatus){
+			alert("失败");
+		  });
 		},
 		leaveCurrentPage:function(path){
 			this.timeoutEventContinue=false;
@@ -76,7 +86,7 @@ define(['js/utils/common.js'], function(CommonApi){
 		},
 		createSlideContainer:function(containerObj,picList){
 			var containerId=containerObj.id;
-			var width=(picList.length + 1) * (containerObj.offsetWidth) + "px";
+			var width=(picList.length + 1) * 6.9 + "em";
 			containerObj.innerHTML = "<div id=\"" + containerId + "_son\" style=\"overflow:hidden;position:relative;height:100%;width:100%\"><div id=\"" + containerId + "_son_picContainer\" style=\"margin-left:0;overflow:hidden;height:100%;width:"+width+"\"></div></div>"
 			var displayHeight = "2.35em";
 			var displayWidth = "6.9em";
@@ -168,6 +178,7 @@ define(['js/utils/common.js'], function(CommonApi){
 								self.imgMoveDistance=parentNode.offsetWidth
 							};
 							if(self.currentDisplayImg==(picLen+1)){//滚到最后一张图
+							    //alert("最后一张图滚完了");
 								slideContainer.style.marginLeft=0;
 								self.currentDisplayImg=1;
 							};
@@ -204,6 +215,7 @@ define(['js/utils/common.js'], function(CommonApi){
 			 this.curBannerImgIndex=1;
 			 this.imgMoveDistance=0;//一张图片移动多少距离
 			 this.currentDisplayImg=1;
+			 
 			 this.bannerImgList=[
 				{
 					src:"img/post1.png",
@@ -213,6 +225,21 @@ define(['js/utils/common.js'], function(CommonApi){
 					style:""
 				}
 			];
+			
+			//模拟
+			/*
+			this.bannerImgList=[
+				{
+					src:"img/post2.png",
+					style:""
+				},{
+					src:"img/post1.png",
+					style:""
+				}
+			];
+			*/
+			
+			
 			if(this.bannerImgList.length>0){
 				this.createSlideContainer(document.getElementById("index_page_banner"),this.bannerImgList);
 				this.waitAllBannerImgOnload("index_page_banner");

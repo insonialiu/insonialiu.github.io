@@ -89,9 +89,14 @@ define(['js/utils/IdentifyingPhotos/html2canvas.min.js'], function(html2canvas){
       var data = {
         img: imgPostData//'aHR0cHM6Ly9pbWcxNC4zNjBidXlpbWcuY29tL24wL2pmcy90NjQyMS8zMS8xNzk1Nzc5NS8xODAzNTUvYzU0ZjEyZGEvNTkzN2Q2ZGJOYTAxNTI0MjQuanBn'
       };
-      var url = 'https://recover.market.alicloudapi.com/recover';
-      url += '?city=%E5%8C%97%E4%BA%AC';
-      var Authorization = 'APPCODE ' + APPCODE;
+      var url = garbageClassificationByImgRequest + '?';      
+      if(typeof garbageClassificationCity !== 'undefined'){
+        url += "city=" + garbageClassificationCity;
+      }
+      var Authorization = "";
+      if(typeof APPCODE !== 'undefined'){
+        Authorization = 'APPCODE ' + APPCODE;
+      }
       $.ajax({
         type: 'POST',
         async: true,

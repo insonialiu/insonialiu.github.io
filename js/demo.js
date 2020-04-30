@@ -1,14 +1,17 @@
+alert("demo.js")
 define(['js/utils/common.js',
         'js/utils/IdentifyingPhotos/index.js',
         'js/utils/IdentifyingSound/index.js',
-      ], function(CommonApi, IdentifyingPhotos, IdentifyingSound){	
+      ], function(CommonApi, IdentifyingPhotos, IdentifyingSound){
+  console.log(CommonApi);
+  console.log(IdentifyingSound);	  
   var indexPage = function(){};
   indexPage.prototype = {
     init: function(containerId){
       var jq=jQuery;
       jq("#"+containerId+"").append(`
         <div style="border:1px red sold;width:100%;height:300px">
-          页面1
+          页面4
           <button id='test'>上传图片</button>
           <img id='testImg' src=''/>
           <div id='log'></div>
@@ -48,7 +51,7 @@ define(['js/utils/common.js',
         // 该浏览器环境理论上是支持录音的
         
         // 获取设备的录音权限，如果是第一次，浏览器会弹框跟用户确认
-        obj1.getUserMedia(function(stream){
+        obj1.getUserMedia(function(){
           log('成功获取到录音权限');
 
 
@@ -56,14 +59,14 @@ define(['js/utils/common.js',
           btnRecord.onclick = function(){
             if(btnRecord.textContent === '开始录制'){
               //开始录音
-              obj1.startRecord(stream);
+              obj1.startRecord();
               btnRecord.textContent = '停止录制';
             }else{
               //停止录音
               obj1.stopRecord(function(result){
-			    alert("按下录音键，停止录制了")
+		alert("按下录音键，停止录制了")
                 obj1.getResultByUploadSound(result, function(data){
-				  alert("getResultByUploadSound");
+                   alert("getResultByUploadSound");
 				  alert(JSON.stringify(data.data));
                   log(JSON.stringify(data.data));
                 }, function(error){
@@ -81,7 +84,23 @@ define(['js/utils/common.js',
         log('设备不支持');
       }
 
+      // 语义理解接口
+      obj1.getSemantic({
+        sentence: '玻璃瓶是什么垃圾'
+      }, function(result){
+        log(JSON.stringify(result));
+      }, function(jqXHR, textStatus){
+        log('语义理解接口失败');
+      });
 
+      // 第三方垃圾文本接口
+      obj1.getRecoverWord({
+        name: '杯子'
+      }, function(result){
+        log(JSON.stringify(result));
+      }, function(jqXHR, textStatus){
+        log('语义理解接口失败');
+      });
 
       
 

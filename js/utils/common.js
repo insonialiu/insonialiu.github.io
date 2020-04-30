@@ -9,10 +9,42 @@ define([], function(){
 				},{
 					key:"js/search.js",
 					title:"搜索"
+				},{
+					key:"js/search_result.js",
+					title:"搜索结果"
 				}
 			]
 		},
-		togglePage:function(target){
+		getgarbageCategoryConfig:function(){
+			return [{
+				name:"有害垃圾",
+				title:"有害垃圾",
+				icon:"img/harmful_garbage.png",
+				guide:"img/harmful_garbage_guide.png",
+				itemImage:"img/harmful_garbage_icon.png"
+				},{
+				name:"其他垃圾",
+				title:"其他垃圾",
+				icon:"img/other_garbage.png",
+				guide:"img/other_garbage_guide.png",
+				itemImage:"img/other_garbage_icon.png"
+				},{
+				name:"厨余垃圾",
+				title:"厨余垃圾",
+				icon:"img/kitchen_garbage.png",
+				guide:"img/kitchen_garbage_guide.png",
+				itemImage:"img/kitchen_garbage_icon.png"
+				},{
+				name:"可回收垃圾",
+				title:"可回收物",
+				icon:"img/recyclable_garbage.png",
+				guide:"img/recyclable_garbage_guide.png",
+				itemImage:"img/recyclable_garbage_icon.png"
+				}
+			]
+		},
+		togglePage:function(target,para){
+		    console.log(target,para);
 			var self=this;
 			require([target], function(curpage){
 				var getConfig=self.getConfig();
@@ -25,7 +57,12 @@ define([], function(){
 				};
 				document.getElementById("waste_sorting_body").innerHTML="";
 				var curpage = new curpage();
-				curpage.init("waste_sorting_body");
+				if(typeof para=="undefined"){
+					curpage.init("waste_sorting_body");
+				}
+				else{
+					curpage.init("waste_sorting_body",para);
+				}
 				window.lastPageList.push(target);
 			});
 		},
@@ -51,7 +88,7 @@ define([], function(){
 			}
 		},
 		//根据关键字搜索匹配的垃圾分类信息
-		searchGarbageClassificationDataByKeyword:function(name,city,callback){
+		searchGarbageClassificationDataByKeyword:function(name,city,callback,failCallback){
 			if(name!=""){//name是必填字段
 				if(typeof APPCODE!="undefined"){
 					if(typeof garbageClassificationByKeywordRequest!="undefined"){
@@ -70,9 +107,28 @@ define([], function(){
 								  'Authorization': Authorization,
 								  'Accept': 'application/json'
 								},
-						}).done(function(data) {
-							callback(data)
-						})
+						}).done(function(data) {	
+							if(typeof data.data!="undefined"){
+								if((data.data instanceof Array)&&(data.data.length==0)){
+									failCallback()
+								}
+								else{
+									if(typeof data.data.list!="undefined"){
+										if((data.data.list instanceof Array)&&(data.data.list.length==0)){
+											failCallback()
+										}
+										else{
+											callback(data)
+										}
+									}
+								}
+							}
+							else{
+								failCallback()
+							}
+						}).fail(function(){
+							failCallback()
+						})	
 					}
 				}
 			}
@@ -84,7 +140,8 @@ define([], function(){
 					if(data.data.list.length>0){
 						var result = data.data.list.map(function (item) {
 							return {
-								name:item.name||""
+								name:item.name||"",
+								category:item.category||"",
 							};
 						});
 					}

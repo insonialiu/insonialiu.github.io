@@ -14,17 +14,21 @@ var IdentifyingSound = {
       successCallback && successCallback(stream);
     }).catch(function(error){
       failedCallback && failedCallback(error);
-    });    
+    });
   },
-  startRecord: function(stream){
-    alert("进入到startRecord")；
+  startRecord: function(){
+alert("进入到startRecord");
     var that = this;
-    that.mediaRecorder = new MediaRecorder(stream);
-    that.mediaRecorder.addEventListener('dataavailable', function(e){
-		 alert("dataavailable")；
-      that.soundData = e.data;
-    })
-    that.mediaRecorder.start();
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(function(stream){
+      that.mediaRecorder = new MediaRecorder(stream);
+      that.mediaRecorder.addEventListener('dataavailable', function(e){
+	 alert("dataavailable");
+        that.soundData = e.data;
+      })
+      that.mediaRecorder.start();  
+    }).catch(function(error){
+      failedCallback && failedCallback(error);
+    });
   },
   stopRecord: function(successCallback){
     var that = this;
@@ -56,13 +60,21 @@ var IdentifyingSound = {
       },
     });
   },
+
+  getSemantic: function(options, successCallback, failedCallback){
+    API.getSemantic(options, successCallback, failedCallback);
+  },
+
+  getRecoverWord: function(options, successCallback, failedCallback){
+    API.getRecoverWord(options, successCallback, failedCallback);
+  },
 }  
 
 //  仅调通WebSocket接口 暂未调通POST stream/1接口
 var API = {
   socket: null,
   create_WebSocket: function (){
-    var socket = new WebSocket('wss://speech.xor-live.io/aquadaas/rest/speech/wsstream');
+    var socket = new WebSocket(speechWebsocketRequest);
     this.socket = socket;
   },
   bindEvent_WebSocketEvent:function(options){
@@ -87,6 +99,66 @@ var API = {
   close_WebSocket: function () {
     this.socket.close();
   },
+
+  getSemantic: function(options, successCallback, failedCallback){
+  alert("getSemantic");
+    var that = this;
+    var url = speechSemanticRequest + '?';
+    if(options.sentence){
+      url += "sentence=" + encodeURIComponent(options.sentence) + "&";
+    }
+    if(typeof speechSemanticRequest_Siteid !== 'undefined'){
+      url += "siteid=" + speechSemanticRequest_Siteid;
+    }
+    $.ajax({
+      type: 'GET',
+      async: true,
+      url: url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      dataType: 'json',
+    }).done(function (data, status, xhr) {
+      successCallback && successCallback(data);
+    }).fail(function (jqXHR, textStatus) {
+      failedCallback && failedCallback(jqXHR, textStatus);
+    });
+  },
+
+  getRecoverWord: function(options, successCallback, failedCallback){
+    alert("getRecoverWord");
+    var that = this;
+    var url = garbageClassificationByKeywordRequest + '?';
+    if(options.name){
+      url += "name=" + encodeURIComponent(options.name) + "&";
+    }
+    if(typeof garbageClassificationCity !== 'undefined'){
+      url += "city=" + garbageClassificationCity;
+    }
+    var Authorization = "";
+    if(typeof APPCODE !== 'undefined'){
+      Authorization = 'APPCODE ' + APPCODE;
+    }
+    $.ajax({
+      type: 'GET',
+      async: true,
+      url: url,
+      headers: {
+        'Authorization': Authorization,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      dataType: 'json',
+    }).done(function (data, status, xhr) {
+      successCallback && successCallback(data);
+    }).fail(function (jqXHR, textStatus) {
+      failedCallback && failedCallback(jqXHR, textStatus);
+    });
+  },
+
+
+  // 未跑通
   sendWav: function(options, callback){
     var that = this;
     var url = 'http://speech.xor-live.io/aquadaas/rest/speech/stream/1?audiotype=pcm&audiorate=8000';

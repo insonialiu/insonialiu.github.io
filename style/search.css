@@ -30,17 +30,41 @@
 	height:100%;
 }
 .search_bottom_audio_container{
-	height:1em;
-	border:1px red solid;
+	height:2.4em;
 	width:100%;
 	bottom:0;
 	position:absolute;
-	/*display:none*//*模拟*/
+}
+.search_bottom_audio_title{
+	width:100%;
+	text-align:center;
+	height:0.36em;
+	line-height:0.36em;
+	color:#999999
+}
+.search_bottom_audio_title>div{
+	width:100%;
+	height:100%;
+	font-size:0.27em
+}
+.search_bottom_img_container{
+	margin-top:0.22em;
+	height:auto;
+	width:100%
+}
+.search_bottom_img_container>img{
+	display:block;
+	width:1.36em;
+	height:auto;
+	margin:0 auto
 }
 .search_menu_body{
    max-height:6.99em;
    width:100%;
-   overflow-y:auto
+   overflow-y:auto;
+   position:absolute;
+   top:1.05em;
+   background-color:#ffffff
 }
 .search_menu_row{
 	border-bottom:1px #efefef solid;
@@ -72,3 +96,28 @@
 	width:100%;
 	font-size: 0.26em;
 }
+.search_no_result_container{
+	margin-top:0.75em;
+	width:100%;
+	height:auto;
+	text-align:center;
+	color:#4d4d4d
+}
+.search_no_result_container>img{
+	width:6.54em;
+	margin:0 auto;
+	display:block
+}
+.search_no_result_container>div{
+	height:0.72em;
+	line-height:0.72em;
+}
+.seach_audio_touch_icon{
+	background-image:url(../img/touch_end.png);
+	background-repeat: no-repeat;
+	background-size:100% 100%;
+	height:1.36em;
+	width:1.36em;
+	margin:0 auto;
+}
+
